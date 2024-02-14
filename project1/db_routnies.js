@@ -8,13 +8,11 @@ const getDBInstance = async () => {
     return db;
   }
     try {
-    const client = new MongoClient(cfg.default.atlas, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      const client = new MongoClient(cfg.atlas, {
     });
     console.log("establishing new connection to Atlas");
     const conn = await client.connect();
-    db = conn.db(cfg.default.appdb);
+    db = conn.db(cfg.appdb);
   } catch (err) {
     console.log(err);
   }

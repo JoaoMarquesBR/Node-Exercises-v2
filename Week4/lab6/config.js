@@ -15,6 +15,7 @@ export const countries = process.env.COUNTRIES;
 export const isocountries = process.env.ISOCOUNTRIES;
 export const atlas = process.env.DBURL;
 export const appdb = process.env.DB;
+export const port = process.env.PORT;
 
 // export default {
 //   atlas: process.env.DBURL,
