@@ -32,7 +32,7 @@ async function loadISOCountries() {
       countries.push(element);
     });
 
-        responseMessage += `Retrieved Country JSON from GitHub. `;
+    responseMessage += `Retrieved Country JSON from GitHub. `;
     console.log(`Retrieved Country JSON from GitHub.`);
 
     countries.forEach((country) => {
@@ -76,10 +76,240 @@ async function loadISOCountries() {
   } catch (err) {
     console.log(err);
   } finally {
-    return {  responseMessage };
+    return { responseMessage };
   }
 }
 
-export { loadISOCountries };
+async function loadAlerts() {
+  let countries = [];
+  let responseMessage = "";
+  let atlasAlert = [];
+
+  try {
+    const db = await dbRtns.getDBInstance();
+    // clean out collection before adding new users
+    let results = await dbRtns.deleteAll(db, "alerts");
+
+    let jsonAlerts = await iso.getJsonFromPromise(cfg.alerts);
+
+    let jsonData = await iso.getJsonFromPromise(cfg.countries);
+
+    jsonData.forEach((element) => {
+      countries.push(element);
+    });
+
+    countries.forEach((country) => {
+      let currentCountryCode = country["alpha-2"];
+      //   console.log(jsonAlerts.data[currentCountryCode])
+
+      if (jsonAlerts.data[currentCountryCode]) {
+        // If there's alert data, associate it with the country
+        country.alertData = jsonAlerts.data[country["alpha-2"]];
+        let advisoryText =
+          jsonAlerts.data[currentCountryCode].eng["advisory-text"];
+        let date = jsonAlerts.data[currentCountryCode]["date-published"].date;
+
+        atlasAlert.push({
+          country: country["alpha-2"],
+          name: country["name"],
+          text: advisoryText,
+          date: date,
+          region: country["region"],
+          subregion: country["sub-region"],
+        });
+      } else {
+        atlasAlert.push({
+          country: country["alpha-2"],
+          name: country["name"],
+          text: "No travel alerts",
+          date: "",
+          region: country["region"],
+          subregion: country["sub-region"],
+        });
+      }
+    });
+
+    results = await dbRtns.addMany(db, "alerts", atlasAlert);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    console.log(atlasAlert.length);
+    return atlasAlert;
+  }
+}
+
+async function loadAlertsForRegion(region) {
+  let countries = [];
+  let atlasAlert = [];
+
+  try {
+    const db = await dbRtns.getDBInstance();
+    let jsonAlerts = await iso.getJsonFromPromise(cfg.alerts);
+    let jsonData = await iso.getJsonFromPromise(cfg.countries);
+
+    jsonData.forEach((element) => {
+      if (element.region === region) {
+        countries.push(element);
+      }
+    });
+
+    countries.forEach((country) => {
+      let currentCountryCode = country["alpha-2"];
+      //   console.log(jsonAlerts.data[currentCountryCode])
+
+      if (jsonAlerts.data[currentCountryCode]) {
+        // If there's alert data, associate it with the country
+        country.alertData = jsonAlerts.data[country["alpha-2"]];
+        let advisoryText =
+          jsonAlerts.data[currentCountryCode].eng["advisory-text"];
+        let date = jsonAlerts.data[currentCountryCode]["date-published"].date;
+
+        atlasAlert.push({
+          country: country["alpha-2"],
+          name: country["name"],
+          text: advisoryText,
+          date: date,
+          region: country["region"],
+          subregion: country["sub-region"],
+        });
+      } else {
+        atlasAlert.push({
+          country: country["alpha-2"],
+          name: country["name"],
+          text: "No travel alerts",
+          date: "",
+          region: country["region"],
+          subregion: country["sub-region"],
+        });
+      }
+    });
+
+    results = await dbRtns.addMany(db, "alerts", atlasAlert);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    console.log(atlasAlert.length);
+    return atlasAlert;
+  }
+}
+
+async function loadAlertsForSubRegion(subregion) {
+  let countries = [];
+  let atlasAlert = [];
+
+  try {
+    const db = await dbRtns.getDBInstance();
+    let jsonAlerts = await iso.getJsonFromPromise(cfg.alerts);
+    let jsonData = await iso.getJsonFromPromise(cfg.countries);
+
+    console.log(subregion);
+    jsonData.forEach((element) => {
+      // console.log(element)
+      console.log(element["sub-region"] + " and " + subregion);
+      if (element["sub-region"] === subregion) {
+        countries.push(element);
+      }
+    });
+
+    console.log("checking " + countries.length);
+
+    countries.forEach((country) => {
+      let currentCountryCode = country["alpha-2"];
+      //   console.log(jsonAlerts.data[currentCountryCode])
+
+      if (jsonAlerts.data[currentCountryCode]) {
+        // If there's alert data, associate it with the country
+        country.alertData = jsonAlerts.data[country["alpha-2"]];
+        let advisoryText =
+          jsonAlerts.data[currentCountryCode].eng["advisory-text"];
+        let date = jsonAlerts.data[currentCountryCode]["date-published"].date;
+
+        atlasAlert.push({
+          country: country["alpha-2"],
+          name: country["name"],
+          text: advisoryText,
+          date: date,
+          region: country["region"],
+          subregion: country["sub-region"],
+        });
+      } else {
+        atlasAlert.push({
+          country: country["alpha-2"],
+          name: country["name"],
+          text: "No travel alerts",
+          date: "",
+          region: country["region"],
+          subregion: country["sub-region"],
+        });
+      }
+    });
+
+    results = await dbRtns.addMany(db, "alerts", atlasAlert);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    console.log(atlasAlert.length);
+    return atlasAlert;
+  }
+}
+
+async function getallregions() {
+  let atlasAlert = [];
+  let uniqueRegions = [];
+
+  try {
+    const db = await dbRtns.getDBInstance();
+    let jsonData = await iso.getJsonFromPromise(cfg.countries);
+
+    jsonData.forEach((element) => {
+      if (!uniqueRegions.includes(element.region)) {
+        uniqueRegions.push(element.region);
+      }
+    });
+
+    results = await dbRtns.addMany(db, "alerts", atlasAlert);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    console.log(uniqueRegions.length);
+    return uniqueRegions;
+  }
+
+  
+}
+
+async function getallsubregions() {
+  let atlasAlert = [];
+  let uniqueSubRegions = [];
+
+  try {
+    const db = await dbRtns.getDBInstance();
+    let jsonData = await iso.getJsonFromPromise(cfg.countries);
+
+    jsonData.forEach((element) => {
+      if (!uniqueSubRegions.includes(element["sub-region"])) {
+        uniqueSubRegions.push(element["sub-region"]);
+      }
+    });
+
+    results = await dbRtns.addMany(db, "alerts", atlasAlert);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    console.log(uniqueSubRegions.length);
+    return uniqueSubRegions;
+  }
+
+  
+}
+
+export {
+  loadISOCountries,
+  loadAlerts,
+  loadAlertsForRegion,
+  loadAlertsForSubRegion,
+  getallregions,
+  getallsubregions
+};
 
 // loadISOCountries();
