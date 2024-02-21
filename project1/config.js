@@ -8,4 +8,5 @@ export const alerts = process.env.GOCALERTS;
 export const countries = process.env.ISOCOUNTRIES;
 export const alertCollection = process.env.ALERTCOLLECTION;
 export const travelalert = process.env.TRAVELALERT;
+export const port = process.env.PORT;
 

@@ -8,37 +8,32 @@ import * as dbRtns from "./db_routnies.js";
 
 async function loadISOCountries() {
   let countries = [];
-  let alerts = [];
-
-  let jsonData = await iso.getJsonFromPromise(cfg.countries);
-
-  jsonData.forEach((element) => {
-    countries.push(element);
-  });
-
-  let jsonAlerts = await iso.getJsonFromPromise(cfg.alerts);
-
-  //   console.log("Retrieved Alert JSON from remote web site.");
-  //   console.log("Retrieved Country JSON from remote web site");
-
-  //   console.log(
-  //     "There are " +
-  //       Object.keys(jsonAlerts.data).length +
-  //       " alerts and " +
-  //       countries.length +
-  //       " countries"
-  //   );
+  let responseMessage = "";
 
   try {
     const db = await dbRtns.getDBInstance();
     // clean out collection before adding new users
-    console.log("\n\n\n");
     let results = await dbRtns.deleteAll(db, "alerts");
+    responseMessage += `deleted ${results.deletedCount} documents from alerts collection. `;
     console.log(
-      `deleted ${results.deletedCount} documents from alerts collection`
+      `deleted ${results.deletedCount} documents from alerts collection. `
     );
 
     let atlasAlert = [];
+
+    let jsonAlerts = await iso.getJsonFromPromise(cfg.alerts);
+
+    responseMessage += `Retrieved Alert JSON from remote website. `;
+    console.log(`Retrieved Alert JSON from remote website.`);
+
+    let jsonData = await iso.getJsonFromPromise(cfg.countries);
+
+    jsonData.forEach((element) => {
+      countries.push(element);
+    });
+
+        responseMessage += `Retrieved Country JSON from GitHub. `;
+    console.log(`Retrieved Country JSON from GitHub.`);
 
     countries.forEach((country) => {
       let currentCountryCode = country["alpha-2"];
@@ -73,13 +68,18 @@ async function loadISOCountries() {
 
     results = await dbRtns.addMany(db, "alerts", atlasAlert);
     console.log(
-      `There are now ${results.insertedCount} documents currently in the alerts collection`
+      `Added ${results.insertedCount} documents to the alerts collection`
     );
-
-    process.exit(0);
+    console.log("concat now!");
+    responseMessage += `Added ${results.insertedCount} documents to the alerts collection`;
+    console.log(responseMessage);
   } catch (err) {
     console.log(err);
+  } finally {
+    return {  responseMessage };
   }
 }
 
-loadISOCountries();
+export { loadISOCountries };
+
+// loadISOCountries();
