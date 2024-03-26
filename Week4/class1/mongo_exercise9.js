@@ -15,6 +15,10 @@ const bulkLoadAndFindByCriteria = async () => {
     console.log(
       `added ${results.insertedCount} documents to the user collection`
     );
+    // let allJEmails = await dbRtns.findAll(db, "users");
+    // console.log(allJEmails)
+    // console.log("***\nfound was "+ allJEmails)
+
     let allJEmails = await dbRtns.findAll(
       db,
       "users",

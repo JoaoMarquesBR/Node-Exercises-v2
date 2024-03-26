@@ -33,4 +33,4 @@ const addMany = (db, coll, docs) => db.collection(coll).insertMany(docs);
 const findOne = (db, coll, criteria) => db.collection(coll).findOne(criteria);
 const findUniqueValues = (db, coll, field) => db.collection(coll).distinct(field);
 
-export {addMany , findOne, getDBInstance ,addOne,count,deleteAll,findAll,findUniqueValues};
+export {addMany ,findOne, getDBInstance ,addOne,count,deleteAll,findAll,findUniqueValues};

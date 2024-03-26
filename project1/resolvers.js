@@ -1,5 +1,5 @@
 import * as dbRtns from "./db_routnies.js";
-import * as cfg from "./config.js";
+import * as cfg from "./config.js"
 
 import {
   loadAlerts,
@@ -7,7 +7,9 @@ import {
   loadAlertsForRegion,
   loadAlertsForSubRegion,
   getallregions,
-  getallsubregions
+  getallsubregions,
+  addAdvisory,
+  getalladviseries
 } from "./project1_setup.js";
 
 const resolvers = {
@@ -65,6 +67,44 @@ const resolvers = {
       console.error(error);
       return null;
     }
+  },
+  addOneAdvisory: async (object) =>{
+    try{
+      const newAdv = await addAdvisory(object);
+      return newAdv;
+    }catch(error){
+      console.log(error)
+    }
+  },
+  adviseries:async()=>{
+    try {
+      const alerts = await getalladviseries();
+      return alerts;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+  users: async () => {
+    let db = await dbRtns.getDBInstance();
+    return await dbRtns.findAll(db, cfg.default.collection, {}, {});
+  },
+  userbyname: async (args) => {
+    let db = await dbRtns.getDBInstance();
+    return await dbRtns.findOne(db, cfg.default.collection, {
+      name: args.name,
+    });
+  },
+  adduser: async (args) => {
+    let db = await dbRtns.getDBInstance();
+    let user = { name: args.name, age: args.age, email: args.email };
+    console.log("adding")
+    console.log(user)
+    console.log(cfg)
+    console.log("x")
+      let results = await dbRtns.addOne(db, "users", user);
+      console.log(results)
+    return results.acknowledged != null  ? user : null;
   },
 };
 

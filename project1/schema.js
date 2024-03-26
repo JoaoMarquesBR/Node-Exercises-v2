@@ -15,16 +15,37 @@ type Alert {
  subregion: String
 }
 
+type Advisery{
+  _id : String
+  name: String
+  country: String
+  date: String
+  text: String
+}
+
+type User {
+  name: String
+  age: Int
+  email: String
+  },
 
 type Query {
     project1_setup: Results
     alerts: [Alert]
+    users: [User]
+    adviseries: [Advisery]
     alertsforregion(region: String): [Alert]
     alertsforsubregion(subregion: String): [Alert]
     regions: [String]
     subregions: [String]
-
   }
+
+  type Mutation {
+    addOneAdvisory(name: String!, country: String!, date: String!, text: String!): Advisery
+    adduser(name: String,age: String! , email: String! ) : User
+  }
+
+
 
 `;
 

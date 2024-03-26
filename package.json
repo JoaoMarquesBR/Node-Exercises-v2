@@ -10,10 +10,19 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@fastify/static": "^7.0.1",
     "dotenv": "^16.4.1",
-    "express": "^4.18.2",
+    "express": "^4.19.0",
+    "fastify": "^4.26.2",
+    "fastify-static": "^4.7.0",
     "got": "^14.1.0",
+    "graphql": "^16.8.1",
+    "http": "^0.0.1-security",
+    "mercurius": "^13.3.3",
     "mongodb": "^6.3.0",
+    "socket.io": "^4.7.5",
+    "socket.io-server": "^1.0.0-b",
     "yargs": "^17.7.2"
   }
 }

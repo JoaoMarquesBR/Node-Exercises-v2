@@ -275,7 +275,7 @@ async function getallregions() {
     return uniqueRegions;
   }
 
-  
+
 }
 
 async function getallsubregions() {
@@ -300,7 +300,39 @@ async function getallsubregions() {
     return uniqueSubRegions;
   }
 
-  
+
+}
+
+async function addAdvisory(advisory) {
+  console.log("addadvisory")
+  try {
+    const db = await dbRtns.getDBInstance();
+
+    console.log("trying to add .")
+    console.log(advisory)
+    let resp = await dbRtns.addOne(db, cfg.adviseriescollection, advisory)
+    const insertedAdvisory = { ...advisory, _id: resp.insertedId };
+
+    console.log(insertedAdvisory)
+    return insertedAdvisory;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function getalladviseries() {
+  let atlasAlert = [];
+  let uniqueSubRegions = [];
+  console.log("getting all adverseries")
+
+  try {
+    const db = await dbRtns.getDBInstance();
+    let dbResponse = await dbRtns.findAll(db, cfg.adviseriescollection);
+    return dbResponse;
+  } catch (err) {
+    console.log(err);
+  }
+
 }
 
 export {
@@ -309,7 +341,9 @@ export {
   loadAlertsForRegion,
   loadAlertsForSubRegion,
   getallregions,
-  getallsubregions
+  getallsubregions,
+  addAdvisory,
+  getalladviseries
 };
 
 // loadISOCountries();
