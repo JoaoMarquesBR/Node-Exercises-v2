@@ -42,7 +42,7 @@ type Query {
 
   type Mutation {
     addOneAdvisory(name: String!, country: String!, date: String!, text: String!): Advisery
-    adduser(name: String,age: String! , email: String! ) : User
+    adduser(name: String,age: Int! , email: String! ) : User
   }
 
 

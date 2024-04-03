@@ -1,0 +1,27 @@
+{
+  "name": "node-exercises",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "author": "JoaoMArques",
+  "scripts": {
+    "start": "node app.js"
+    },
+  "license": "ISC",
+  "engines": {
+    "node": "16.13"
+  },
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "express": "^4.19.0",
+    "got": "^14.1.0",
+    "graphql": "^16.8.1",
+    "http": "^0.0.1-security",
+    "mercurius": "^13.3.3",
+    "mongodb": "^6.3.0",
+    "socket.io": "^4.7.5",
+    "socket.io-server": "^1.0.0-b",
+    "yargs": "^17.7.2"
+  }
+}
