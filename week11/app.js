@@ -11,6 +11,7 @@ const streetLights = [
     { streetName: 'Joao', green: 3000, red: 2500, yellow: 3000 },
     { streetName: 'Marques', green: 5000, red: 4000, yellow: 4000 },
     { streetName: 'Info3139', green: 7000, red: 2000, yellow: 3500 },
+    { streetName: 'LucasHypee Street', green: 7000, red: 2000, yellow: 3500 },
     // { streetName: 'fourthstreet', green: 13000, red: 7200, yellow: 2800 },
     // { streetName: 'fifthstreet', green: 11500, red: 7600, yellow: 3200 },
     // { streetName: 'sixthstreet', green: 12500, red: 7400, yellow: 2900 },
